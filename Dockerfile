@@ -1,18 +1,10 @@
-
 FROM gradle:9.7.1-jdk21 AS build
 
 WORKDIR /app
 
-ENV GRADLE_USER_HOME=/home/gradle/.gradle
+COPY . .
 
-COPY --chown=gradle:gradle . .
-
-RUN mkdir -p /home/gradle/.gradle \
-    && chown -R gradle:gradle /home/gradle/.gradle
-
-USER gradle
-
-RUN gradle --gradle-user-home /home/gradle/.gradle bootJar -x test --no-daemon
+RUN gradle bootJar -x test --no-daemon
 
 FROM eclipse-temurin:21-jre
 
